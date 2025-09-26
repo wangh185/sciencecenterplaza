@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvard Science Center Plaza Survey Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Print styles for PDF */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 12pt;
+                line-height: 1.4;
+            }
+            
+            .container {
+                background: white !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc;
+                max-width: none;
+                margin: 0;
+                padding: 20px;
+            }
+            
+            h1 {
+                color: #2c3e50 !important;
+                font-size: 24pt;
+                text-shadow: none !important;
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+            }
+            
+            h2 {
+                color: #34495e !important;
+                border-bottom: 2px solid #3498db !important;
+                font-size: 18pt;
+                text-shadow: none !important;
+                box-shadow: none !important;
+            }
+            
+            h3 {
+                color: #2c3e50 !important;
+                font-size: 14pt;
+                text-shadow: none !important;
+            }
+            
+            .subtitle {
+                color: #7f8c8d !important;
+                text-shadow: none !important;
+            }
+            
+            .stat-card {
+                background: #f8f9fa !important;
+                color: #333 !important;
+                border: 1px solid #dee2e6 !important;
+                box-shadow: none !important;
+            }
+            
+            .stat-number {
+                color: #3498db !important;
+                text-shadow: none !important;
+            }
+            
+            .chart-container {
+                background: white !important;
+                border: 1px solid #dee2e6 !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+            
+            table {
+                background: white !important;
+                border: 1px solid #dee2e6 !important;
+                box-shadow: none !important;
+            }
+            
+            th {
+                background-color: #f8f9fa !important;
+                color: #495057 !important;
+                text-shadow: none !important;
+            }
+            
+            th, td {
+                color: #333 !important;
+                border-bottom: 1px solid #dee2e6 !important;
+            }
+            
+            tr:hover {
+                background-color: #f8f9fa !important;
+            }
+            
+            .insights {
+                background: #e8f4f8 !important;
+                border-left: 4px solid #3498db !important;
+                box-shadow: none !important;
+            }
+            
+            .insights h3 {
+                color: #2c3e50 !important;
+                text-shadow: none !important;
+            }
+            
+            .insights ul {
+                color: #333 !important;
+            }
+            
+            .team-section {
+                background: #f8f9fa !important;
+                border: 1px solid #dee2e6 !important;
+                box-shadow: none !important;
+            }
+            
+            .team-section h3 {
+                color: #495057 !important;
+                text-shadow: none !important;
+            }
+            
+            .team-section p {
+                color: #6c757d !important;
+                text-shadow: none !important;
+            }
+            
+            .footer {
+                border-top: 1px solid #dee2e6 !important;
+                color: #6c757d !important;
+                text-shadow: none !important;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+        }
+        
+        /* Screen styles */
+        @media screen {
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+                background-color: #1a1a1a;
+                color: #ffffff;
+                min-height: 100vh;
+            }
+            
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background: #2a2a2a;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            }
+            
+            h1 {
+                color: #ffffff;
+                text-align: center;
+                margin-bottom: 10px;
+                font-size: 2.5em;
+            }
+            
+            .subtitle {
+                text-align: center;
+                color: #cccccc;
+                margin-bottom: 40px;
+                font-size: 1.2em;
+            }
+            
+            h2 {
+                color: #4a9eff;
+                border-bottom: 2px solid #4a9eff;
+                padding-bottom: 10px;
+                margin-top: 40px;
+                margin-bottom: 20px;
+            }
+            
+            h3 {
+                color: #ffffff;
+                margin-top: 30px;
+                margin-bottom: 15px;
+            }
+            
+            .summary-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin: 30px 0;
+            }
+            
+            .stat-card {
+                background: #3a3a3a;
+                color: white;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                border: 1px solid #4a4a4a;
+            }
+            
+            .stat-number {
+                font-size: 2.5em;
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #4a9eff;
+            }
+            
+            .stat-label {
+                font-size: 1.1em;
+                opacity: 0.9;
+            }
+            
+            .chart-container {
+                background: #2a2a2a;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                margin: 20px 0;
+                border: 1px solid #4a4a4a;
+            }
+            
+            .chart-wrapper {
+                position: relative;
+                height: 400px;
+                margin: 20px 0;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+                margin: 20px 0;
+            }
+            
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: #2a2a2a;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            }
+            
+            th, td {
+                padding: 12px 15px;
+                text-align: left;
+                border-bottom: 1px solid #4a4a4a;
+                color: #ffffff;
+            }
+            
+            th {
+                background-color: #3a3a3a;
+                color: #4a9eff;
+                font-weight: 600;
+            }
+            
+            tr:hover {
+                background-color: #3a3a3a;
+            }
+            
+            .insights {
+                background: #3a3a3a;
+                padding: 20px;
+                border-radius: 8px;
+                border-left: 4px solid #4a9eff;
+                margin: 20px 0;
+            }
+            
+            .insights h3 {
+                margin-top: 0;
+                color: #4a9eff;
+            }
+            
+            .insights ul {
+                color: #cccccc;
+            }
+            
+            .insights li {
+                margin-bottom: 8px;
+            }
+            
+            .footer {
+                text-align: center;
+                margin-top: 40px;
+                padding-top: 20px;
+                border-top: 1px solid #4a4a4a;
+                color: #888888;
+            }
+            
+            .team-section {
+                text-align: center;
+                margin: 20px 0;
+                padding: 15px;
+                background: #3a3a3a;
+                border-radius: 8px;
+                border: 1px solid #4a4a4a;
+            }
+            
+            .team-section h3 {
+                margin: 0 0 10px 0;
+                color: #4a9eff;
+                font-size: 1.1em;
+            }
+            
+            .team-section p {
+                margin: 0;
+                color: #cccccc;
+                font-size: 1em;
+            }
+            
+            .print-button {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4a9eff;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 14px;
+                z-index: 1000;
+            }
+            
+            .print-button:hover {
+                background: #3a8eef;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">📄 打印/保存PDF</button>
+    
+    <div class="container">
+        <h1>Harvard Science Center Plaza Survey Report</h1>
+        <p class="subtitle">Perceptions of the Harvard Science Center Plaza Survey - Data Visualization Report</p>
+        <div class="team-section">
+            <h3>Team Members</h3>
+            <p>Haotian Wang, Aimee Ye, Sebastian Guo, Max Xiao</p>
+        </div>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <div class="stat-number">19</div>
+                <div class="stat-label">Total Respondents</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">74%</div>
+                <div class="stat-label">Graduate Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">28%</div>
+                <div class="stat-label">First-time Visitors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">39%</div>
+                <div class="stat-label">Midday Visitors</div>
+            </div>
+        </div>
+
+        <h2>1. Respondent Demographics</h2>
+        <div class="chart-container">
+            <h3>Affiliation Distribution</h3>
+            <div class="chart-wrapper">
+                <canvas id="demographicsChart"></canvas>
+            </div>
+        </div>
+
+        <h2>2. Visit Frequency Patterns</h2>
+        <div class="chart-container">
+            <h3>How Often Respondents Visit the Plaza</h3>
+            <div class="chart-wrapper">
+                <canvas id="frequencyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <h2>3. Time of Day Distribution</h2>
+        <div class="chart-container">
+            <h3>Preferred Time of Day for Plaza Visits</h3>
+            <div class="chart-wrapper">
+                <canvas id="timeChart"></canvas>
+            </div>
+        </div>
+
+        <h2>4. Spatial Design Perceptions (Likert Scale)</h2>
+        <div class="chart-container">
+            <h3>Agreement Levels with Spatial Design Statements</h3>
+            <div class="chart-wrapper">
+                <canvas id="likertChart"></canvas>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <h2>5. Experience Ratings</h2>
+        <div class="chart-container">
+            <h3>User Experience in the Plaza</h3>
+            <div class="chart-wrapper">
+                <canvas id="experienceChart"></canvas>
+            </div>
+        </div>
+
+        <h2>6. Summary Statistics</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Average Rating</th>
+                        <th>Standard Deviation</th>
+                        <th>Min</th>
+                        <th>Max</th>
+                        <th>Responses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Legibility / Wayfinding</td>
+                        <td>3.29</td>
+                        <td>1.23</td>
+                        <td>2.00</td>
+                        <td>6.00</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td>Enclosure / Openness</td>
+                        <td>4.24</td>
+                        <td>1.26</td>
+                        <td>2.00</td>
+                        <td>6.00</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td>Grouping / Coherence</td>
+                        <td>3.82</td>
+                        <td>0.86</td>
+                        <td>2.00</td>
+                        <td>5.00</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td>Microclimate & Amenities</td>
+                        <td>3.94</td>
+                        <td>0.94</td>
+                        <td>2.00</td>
+                        <td>5.00</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td>Mental Escape</td>
+                        <td>3.35</td>
+                        <td>1.08</td>
+                        <td>1.00</td>
+                        <td>5.00</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>Attention Capture</td>
+                        <td>3.53</td>
+                        <td>1.09</td>
+                        <td>1.00</td>
+                        <td>5.00</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>Comfort & Safety</td>
+                        <td>3.88</td>
+                        <td>1.17</td>
+                        <td>1.00</td>
+                        <td>5.00</td>
+                        <td>16</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="insights">
+            <h3>Key Insights</h3>
+            <ul>
+                <li><strong>Demographics:</strong> The survey was primarily completed by graduate students (74%), indicating the plaza serves as an important space for the academic community.</li>
+                <li><strong>Usage Patterns:</strong> Visitors are evenly distributed across frequency categories, with 28% being first-time visitors and 22% visiting daily.</li>
+                <li><strong>Time Preferences:</strong> Midday (39%) and afternoon (28%) are the most popular times, suggesting the plaza is used primarily during academic hours.</li>
+                <li><strong>Spatial Design:</strong> Enclosure/openness received the highest rating (4.24), while legibility/wayfinding scored lowest (3.29), indicating potential navigation challenges.</li>
+                <li><strong>User Experience:</strong> Comfort and safety scored well (3.88), but sensory experiences (sound, smell) had limited responses, suggesting these aspects may need more attention.</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Report generated from Harvard Science Center Plaza Survey Data | Total Respondents: 19</p>
+        </div>
+    </div>
+
+    <script>
+        // Chart 1: Demographics
+        const demographicsCtx = document.getElementById('demographicsChart').getContext('2d');
+        new Chart(demographicsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Graduate Student', 'Undergraduate Student', 'Staff/Faculty', 'Visitor/Tourist'],
+                datasets: [{
+                    data: [14, 3, 1, 1],
+                    backgroundColor: [
+                        '#4a9eff',
+                        '#6c5ce7',
+                        '#00b894',
+                        '#fdcb6e'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#2a2a2a'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Visit Frequency
+        const frequencyCtx = document.getElementById('frequencyChart').getContext('2d');
+        new Chart(frequencyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['First time', 'A few times a semester', 'Weekly', 'Daily'],
+                datasets: [{
+                    label: 'Number of Respondents',
+                    data: [5, 4, 5, 4],
+                    backgroundColor: [
+                        '#4a9eff',
+                        '#6c5ce7',
+                        '#00b894',
+                        '#fdcb6e'
+                    ],
+                    borderColor: [
+                        '#4a9eff',
+                        '#6c5ce7',
+                        '#00b894',
+                        '#fdcb6e'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = 19;
+                                const percentage = ((context.parsed.y / total) * 100).toFixed(1);
+                                return context.parsed.y + ' respondents (' + percentage + '%)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 3: Time of Day
+        const timeCtx = document.getElementById('timeChart').getContext('2d');
+        new Chart(timeCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ['Morning', 'Midday', 'Afternoon', 'Evening', 'Night'],
+                datasets: [{
+                    data: [1, 7, 5, 3, 2],
+                    backgroundColor: [
+                        '#fdcb6e',
+                        '#4a9eff',
+                        '#6c5ce7',
+                        '#00b894',
+                        '#e17055'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#2a2a2a'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 4: Likert Scale Responses
+        const likertCtx = document.getElementById('likertChart').getContext('2d');
+        new Chart(likertCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Legibility/Wayfinding', 'Enclosure/Openness', 'Grouping/Coherence', 'Microclimate/Amenities'],
+                datasets: [{
+                    label: 'Average Rating',
+                    data: [3.29, 4.24, 3.82, 3.94],
+                    backgroundColor: [
+                        '#4a9eff',
+                        '#6c5ce7',
+                        '#00b894',
+                        '#fdcb6e'
+                    ],
+                    borderColor: [
+                        '#4a9eff',
+                        '#6c5ce7',
+                        '#00b894',
+                        '#fdcb6e'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Average: ' + context.parsed.y.toFixed(2) + '/6.00';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 6,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 5: Experience Ratings
+        const experienceCtx = document.getElementById('experienceChart').getContext('2d');
+        new Chart(experienceCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Mental Escape', 'Attention Capture', 'Comfort & Safety', 'Sound Experience', 'Smell Experience'],
+                datasets: [{
+                    label: 'Average Rating',
+                    data: [3.35, 3.53, 3.88, 4.20, 3.60],
+                    backgroundColor: 'rgba(74, 158, 255, 0.2)',
+                    borderColor: '#4a9eff',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#4a9eff',
+                    pointBorderColor: '#2a2a2a',
+                    pointHoverBackgroundColor: '#6c5ce7',
+                    pointHoverBorderColor: '#4a9eff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Average: ' + context.parsed.r.toFixed(2) + '/5.00';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
